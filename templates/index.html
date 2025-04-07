@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ElasticSearch Log Viewer</title>
+</head>
+<body>
+    <h2>Search Logs</h2>
+    <form id="search-form">
+        Keyword: <input type="text" name="keyword"><br>
+        Log Level: <select name="log_level">
+            <option value="">All</option>
+            <option value="INFO">INFO</option>
+            <option value="ERROR">ERROR</option>
+            <option value="WARN">WARN</option>
+            <option value="DEBUG">DEBUG</option>
+        </select><br>
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Recent Logs</h2>
+    <div id="recent-logs"></div>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/search', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert(JSON.stringify(data));
+            });
+        });
+
+        // Load recent logs
+        fetch('/recent')
+            .then(response => response.json())
+            .then(data => {
+                const logContainer = document.getElementById('recent-logs');
+                logContainer.innerHTML = data.map(log => `<p>${log.message}</p>`).join('');
+            });
+    </script>
+</body>
+</html>
