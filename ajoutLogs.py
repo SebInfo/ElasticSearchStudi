@@ -2,12 +2,16 @@ import requests
 
 # Configuration
 es_url = "http://localhost:9200/logs/_doc"
-log_file = "logs.txt"
+log_file = "logs.txt" # fichier où se trouve les logs
 
 # Ouvrir le fichier de logs et lire chaque ligne
 with open(log_file, "r") as file:
     for line in file:
         # Préparer les données en JSON
+        #
+        # Pour chaque ligne, un dictionnaire JSON 
+        # est préparé avec la clé "message".
+        #
         data = {
             "message": line.strip()
         }
