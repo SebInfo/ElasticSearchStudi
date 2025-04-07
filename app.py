@@ -18,14 +18,13 @@ def search_logs():
         'query': {
             'bool': {
                 'must': [
-                    {'match': {'message': keyword}}
+                    {'match_phrase': {'message': keyword}}
                 ]
             }
         }
     }
     if log_level:
         query['query']['bool']['must'].append({'match': {'message': log_level}})
-
     response = requests.post(ES_URL, json=query)
     if response.status_code == 200:
         results = response.json()['hits']['hits']
